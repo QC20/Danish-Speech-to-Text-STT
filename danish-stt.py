@@ -3,7 +3,7 @@ Header Information
 Date: 20 August 2025
 Author: Jonas Kjeldmand Jensen
 Affiliation: Technical University of Denmark, Section for Strategy and Leadership Development
-Description: This script performs enhanced transcription of research interviews using OpenAI Whisper Large-v2.
+Description: This script performs enhanced transcription of research interviews using OpenAI Whisper Large-v3.
 dependencies: pip install openai-whisper python-docx
 git clone: https://github.com/QC20/Danish-Speech-to-Text-STT.git
 """
@@ -116,7 +116,7 @@ def create_academic_word_document(transcript_data, metadata, output_path):
         ('Duration:', metadata['duration']),
         ('Location:', '[Location Here]'),
         ('Audio Quality:', metadata['audio_quality']),
-        ('Transcription Method:', 'OpenAI Whisper Large-v2 (Automated) + Manual Review'),
+        ('Transcription Method:', 'OpenAI Whisper Large-v3 (Automated) + Manual Review'),
         ('Total Segments:', str(metadata['total_segments'])),
         ('Average Confidence:', f"{metadata['avg_confidence']} (Higher is better)"),
         ('Context Provided:', f"Yes - {metadata['interview_type']} context"),
@@ -131,7 +131,7 @@ def create_academic_word_document(transcript_data, metadata, output_path):
     # Transcription notes
     doc.add_heading('Transcription Notes', level=1)
     notes_para = doc.add_paragraph()
-    notes_para.add_run("• Automated transcription using OpenAI Whisper Large-v2 model\n")
+    notes_para.add_run("• Automated transcription using OpenAI Whisper Large-v3 model\n")
     notes_para.add_run(f"• Language: {metadata['language']} (explicitly specified)\n") 
     notes_para.add_run("• Enhanced quality parameters: beam search, best-of-5, context-aware\n")
     notes_para.add_run(f"• Context provided: {metadata['interview_type']} setting\n")
@@ -285,6 +285,7 @@ def main():
         "task": "transcribe",
         "word_timestamps": True,
         "verbose": True,
+        #"hallucination_silence_threshold": 1.0, # Only work with large-v3
         
         # Context and accuracy improvements
         "condition_on_previous_text": True,  # Use previous text for context
@@ -321,9 +322,9 @@ def main():
     shutil.copy2(audio_file_path, audio_copy_path)
     print(f"Audio file copied to project folder")
     
-    print("Loading Whisper model (large-v2 for maximum accuracy)...")
+    print("Loading Whisper model (large-v3 for maximum accuracy)...")
     # Use largest model for best accuracy
-    whisper_model = whisper.load_model("large-v2")  # Maximum accuracy
+    whisper_model = whisper.load_model("large-v3")  # Maximum accuracy
     
     print("Transcribing audio with enhanced settings...")
     print("This may take longer but will provide better accuracy...\n")
