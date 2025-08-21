@@ -24,7 +24,7 @@ A powerful Python script for transcribing research interviews using OpenAI's Whi
 
 1. **Install dependencies using pip:**
    ```bash
-   pip install openai-whisper python-docx
+   pip install openai-whisper python-docx torch
    ```
 
 2. **Alternative: Create a virtual environment (recommended):**
